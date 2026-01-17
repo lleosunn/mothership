@@ -1,0 +1,53 @@
+running egg_info
+creating ../../build/localization/localization.egg-info
+writing ../../build/localization/localization.egg-info/PKG-INFO
+writing dependency_links to ../../build/localization/localization.egg-info/dependency_links.txt
+writing entry points to ../../build/localization/localization.egg-info/entry_points.txt
+writing requirements to ../../build/localization/localization.egg-info/requires.txt
+writing top-level names to ../../build/localization/localization.egg-info/top_level.txt
+writing manifest file '../../build/localization/localization.egg-info/SOURCES.txt'
+reading manifest file '../../build/localization/localization.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file '../../build/localization/localization.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/leosun/ros2_ws/build/localization/build
+creating /home/leosun/ros2_ws/build/localization/build/lib
+creating /home/leosun/ros2_ws/build/localization/build/lib/localization
+copying localization/pose_visualizer.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+copying localization/__init__.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+copying localization/newposevisualizer.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+copying localization/dual_camera_detection.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+copying localization/camera1_publisher.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+copying localization/camera0_publisher.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+running install
+running install_lib
+creating /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+copying /home/leosun/ros2_ws/build/localization/build/lib/localization/pose_visualizer.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+copying /home/leosun/ros2_ws/build/localization/build/lib/localization/__init__.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+copying /home/leosun/ros2_ws/build/localization/build/lib/localization/newposevisualizer.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+copying /home/leosun/ros2_ws/build/localization/build/lib/localization/dual_camera_detection.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+copying /home/leosun/ros2_ws/build/localization/build/lib/localization/camera1_publisher.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+copying /home/leosun/ros2_ws/build/localization/build/lib/localization/camera0_publisher.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/pose_visualizer.py to pose_visualizer.cpython-310.pyc
+byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/newposevisualizer.py to newposevisualizer.cpython-310.pyc
+byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/dual_camera_detection.py to dual_camera_detection.cpython-310.pyc
+byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/camera1_publisher.py to camera1_publisher.cpython-310.pyc
+byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/camera0_publisher.py to camera0_publisher.cpython-310.pyc
+running install_data
+creating /home/leosun/ros2_ws/install/localization/share/ament_index
+creating /home/leosun/ros2_ws/install/localization/share/ament_index/resource_index
+creating /home/leosun/ros2_ws/install/localization/share/ament_index/resource_index/packages
+copying resource/localization -> /home/leosun/ros2_ws/install/localization/share/ament_index/resource_index/packages
+copying package.xml -> /home/leosun/ros2_ws/install/localization/share/localization
+creating /home/leosun/ros2_ws/install/localization/share/localization/launch
+copying launch/launch.xml -> /home/leosun/ros2_ws/install/localization/share/localization/launch
+running install_egg_info
+Copying ../../build/localization/localization.egg-info to /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization-0.0.0-py3.10.egg-info
+running install_scripts
+Installing camera0_publisher script to /home/leosun/ros2_ws/install/localization/lib/localization
+Installing camera1_publisher script to /home/leosun/ros2_ws/install/localization/lib/localization
+Installing dual_camera_detection script to /home/leosun/ros2_ws/install/localization/lib/localization
+Installing pose_visualizer script to /home/leosun/ros2_ws/install/localization/lib/localization
+writing list of installed files to '/home/leosun/ros2_ws/build/localization/install.log'

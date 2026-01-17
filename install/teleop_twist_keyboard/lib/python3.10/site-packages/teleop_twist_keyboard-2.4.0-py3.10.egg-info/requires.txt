@@ -1,0 +1,6 @@
+numpy
+opencv-contrib-python
+scipy
+setuptools
+tf-transformations
+torch

@@ -1,0 +1,10 @@
+[console_scripts]
+aruco_controller = aruco_controller:main
+camera0_publisher = camera0_publisher:main
+camera1_publisher = camera1_publisher:main
+collisionavoidance = collisionavoidance:main
+detection = detection:main
+newdetection = newdetection:main
+repulsive_avoidance = repulsive_avoidance:main
+teleop_twist_keyboard = teleop_twist_keyboard:main
+
