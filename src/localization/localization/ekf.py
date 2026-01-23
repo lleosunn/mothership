@@ -69,15 +69,15 @@ class SimpleEkfFuser(Node):
         # Number of robots to support
         self.num_robots = 2
 
-        # Process noise (Q) - tune these if needed
+        # increase Q: trust cameras more (faster response, more noise)
         self.q_x = 0.01   # m^2 per step
         self.q_y = 0.01
-        self.q_yaw = 0.005  # rad^2 per step
+        self.q_yaw = 0.01  # rad^2 per step
 
-        # Measurement noise (R) - how noisy /pose_N is
-        self.r_x = 0.25    # m^2
-        self.r_y = 0.25
-        self.r_yaw = 0.10  # rad^2
+        # increase R: trust model more (smoother, slower response)
+        self.r_x = 0.01   # m^2
+        self.r_y = 0.01
+        self.r_yaw = 0.01  # rad^2
 
         # Per-robot EKF state
         self.robot_states = {i: RobotEkfState() for i in range(1, self.num_robots + 1)}

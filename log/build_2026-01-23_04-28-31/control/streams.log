@@ -1,0 +1,45 @@
+[0.493s] Invoking command in '/home/leosun/ros2_ws/src/control': PYTHONPATH=/home/leosun/ros2_ws/build/control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/control build --build-base /home/leosun/ros2_ws/build/control/build install --record /home/leosun/ros2_ws/build/control/install.log --single-version-externally-managed install_data
+[0.584s] running egg_info
+[0.584s] creating ../../build/control/control.egg-info
+[0.585s] writing ../../build/control/control.egg-info/PKG-INFO
+[0.585s] writing dependency_links to ../../build/control/control.egg-info/dependency_links.txt
+[0.585s] writing entry points to ../../build/control/control.egg-info/entry_points.txt
+[0.585s] writing requirements to ../../build/control/control.egg-info/requires.txt
+[0.585s] writing top-level names to ../../build/control/control.egg-info/top_level.txt
+[0.585s] writing manifest file '../../build/control/control.egg-info/SOURCES.txt'
+[0.585s] reading manifest file '../../build/control/control.egg-info/SOURCES.txt'
+[0.585s] adding license file 'LICENSE'
+[0.586s] writing manifest file '../../build/control/control.egg-info/SOURCES.txt'
+[0.586s] running build
+[0.586s] running build_py
+[0.586s] creating /home/leosun/ros2_ws/build/control/build
+[0.586s] creating /home/leosun/ros2_ws/build/control/build/lib
+[0.586s] creating /home/leosun/ros2_ws/build/control/build/lib/control
+[0.586s] copying control/stay_in_place.py -> /home/leosun/ros2_ws/build/control/build/lib/control
+[0.586s] copying control/__init__.py -> /home/leosun/ros2_ws/build/control/build/lib/control
+[0.586s] copying control/simple_rotation.py -> /home/leosun/ros2_ws/build/control/build/lib/control
+[0.586s] copying control/repulsive_avoidance.py -> /home/leosun/ros2_ws/build/control/build/lib/control
+[0.586s] running install
+[0.586s] running install_lib
+[0.587s] creating /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control
+[0.587s] copying /home/leosun/ros2_ws/build/control/build/lib/control/stay_in_place.py -> /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control
+[0.587s] copying /home/leosun/ros2_ws/build/control/build/lib/control/__init__.py -> /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control
+[0.587s] copying /home/leosun/ros2_ws/build/control/build/lib/control/simple_rotation.py -> /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control
+[0.587s] copying /home/leosun/ros2_ws/build/control/build/lib/control/repulsive_avoidance.py -> /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control
+[0.587s] byte-compiling /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control/stay_in_place.py to stay_in_place.cpython-310.pyc
+[0.588s] byte-compiling /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control/__init__.py to __init__.cpython-310.pyc
+[0.588s] byte-compiling /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control/simple_rotation.py to simple_rotation.cpython-310.pyc
+[0.588s] byte-compiling /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control/repulsive_avoidance.py to repulsive_avoidance.cpython-310.pyc
+[0.589s] Sorry: IndentationError: unexpected indent (repulsive_avoidance.py, line 268)
+[0.589s] running install_data
+[0.589s] creating /home/leosun/ros2_ws/install/control/share/ament_index
+[0.589s] creating /home/leosun/ros2_ws/install/control/share/ament_index/resource_index
+[0.589s] creating /home/leosun/ros2_ws/install/control/share/ament_index/resource_index/packages
+[0.589s] copying resource/control -> /home/leosun/ros2_ws/install/control/share/ament_index/resource_index/packages
+[0.589s] copying package.xml -> /home/leosun/ros2_ws/install/control/share/control
+[0.589s] running install_egg_info
+[0.591s] Copying ../../build/control/control.egg-info to /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control-0.0.0-py3.10.egg-info
+[0.591s] running install_scripts
+[0.599s] Installing stay_in_place = control.stay_in_place:mainrepulsive_avoidance script to /home/leosun/ros2_ws/install/control/lib/control
+[0.599s] writing list of installed files to '/home/leosun/ros2_ws/build/control/install.log'
+[0.640s] Invoked command in '/home/leosun/ros2_ws/src/control' returned '0': PYTHONPATH=/home/leosun/ros2_ws/build/control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/control build --build-base /home/leosun/ros2_ws/build/control/build install --record /home/leosun/ros2_ws/build/control/install.log --single-version-externally-managed install_data

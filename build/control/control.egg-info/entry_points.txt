@@ -1,0 +1,5 @@
+[console_scripts]
+repulsive_avoidance = control.repulsive_avoidance:main
+stay_in_place = control.stay_in_place:main
+teleop_twist_keyboard = control.teleop_twist_keyboard:main
+

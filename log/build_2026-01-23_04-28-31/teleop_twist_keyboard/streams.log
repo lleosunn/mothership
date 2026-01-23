@@ -1,0 +1,63 @@
+[0.604s] Invoking command in '/home/leosun/ros2_ws/src/teleop_twist_keyboard-dashing': PYTHONPATH=/home/leosun/ros2_ws/build/teleop_twist_keyboard/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/teleop_twist_keyboard build --build-base /home/leosun/ros2_ws/build/teleop_twist_keyboard/build install --record /home/leosun/ros2_ws/build/teleop_twist_keyboard/install.log --single-version-externally-managed install_data
+[0.698s] running egg_info
+[0.698s] creating ../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info
+[0.698s] writing ../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info/PKG-INFO
+[0.698s] writing dependency_links to ../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info/dependency_links.txt
+[0.698s] writing entry points to ../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info/entry_points.txt
+[0.698s] writing requirements to ../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info/requires.txt
+[0.698s] writing top-level names to ../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info/top_level.txt
+[0.698s] writing manifest file '../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info/SOURCES.txt'
+[0.699s] file aruco_controller.py (for module aruco_controller) not found
+[0.699s] file repulsive_avoidance.py (for module repulsive_avoidance) not found
+[0.699s] reading manifest file '../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info/SOURCES.txt'
+[0.699s] adding license file 'LICENSE'
+[0.699s] writing manifest file '../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info/SOURCES.txt'
+[0.699s] running build
+[0.699s] running build_py
+[0.699s] file aruco_controller.py (for module aruco_controller) not found
+[0.699s] file repulsive_avoidance.py (for module repulsive_avoidance) not found
+[0.699s] creating /home/leosun/ros2_ws/build/teleop_twist_keyboard/build
+[0.700s] creating /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib
+[0.700s] copying teleop_twist_keyboard.py -> /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib
+[0.700s] copying collisionavoidance.py -> /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib
+[0.700s] copying detection.py -> /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib
+[0.700s] copying newdetection.py -> /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib
+[0.700s] copying camera0_publisher.py -> /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib
+[0.700s] copying camera1_publisher.py -> /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib
+[0.700s] running install
+[0.700s] running install_lib
+[0.700s] file aruco_controller.py (for module aruco_controller) not found
+[0.700s] file repulsive_avoidance.py (for module repulsive_avoidance) not found
+[0.700s] copying /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib/teleop_twist_keyboard.py -> /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages
+[0.700s] copying /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib/collisionavoidance.py -> /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages
+[0.700s] copying /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib/detection.py -> /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages
+[0.700s] copying /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib/camera1_publisher.py -> /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages
+[0.700s] copying /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib/camera0_publisher.py -> /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages
+[0.700s] copying /home/leosun/ros2_ws/build/teleop_twist_keyboard/build/lib/newdetection.py -> /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages
+[0.701s] byte-compiling /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages/teleop_twist_keyboard.py to teleop_twist_keyboard.cpython-310.pyc
+[0.702s] byte-compiling /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages/collisionavoidance.py to collisionavoidance.cpython-310.pyc
+[0.703s] byte-compiling /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages/detection.py to detection.cpython-310.pyc
+[0.703s] byte-compiling /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages/camera1_publisher.py to camera1_publisher.cpython-310.pyc
+[0.703s] byte-compiling /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages/camera0_publisher.py to camera0_publisher.cpython-310.pyc
+[0.703s] byte-compiling /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages/newdetection.py to newdetection.cpython-310.pyc
+[0.704s] running install_data
+[0.704s] creating /home/leosun/ros2_ws/install/teleop_twist_keyboard/share/ament_index
+[0.704s] creating /home/leosun/ros2_ws/install/teleop_twist_keyboard/share/ament_index/resource_index
+[0.704s] creating /home/leosun/ros2_ws/install/teleop_twist_keyboard/share/ament_index/resource_index/packages
+[0.704s] copying resource/teleop_twist_keyboard -> /home/leosun/ros2_ws/install/teleop_twist_keyboard/share/ament_index/resource_index/packages
+[0.705s] copying package.xml -> /home/leosun/ros2_ws/install/teleop_twist_keyboard/share/teleop_twist_keyboard
+[0.705s] creating /home/leosun/ros2_ws/install/teleop_twist_keyboard/share/teleop_twist_keyboard/launch
+[0.705s] copying launch/launch.xml -> /home/leosun/ros2_ws/install/teleop_twist_keyboard/share/teleop_twist_keyboard/launch
+[0.705s] running install_egg_info
+[0.705s] Copying ../../build/teleop_twist_keyboard/teleop_twist_keyboard.egg-info to /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages/teleop_twist_keyboard-2.4.0-py3.10.egg-info
+[0.705s] running install_scripts
+[0.716s] Installing camera0_publisher script to /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/teleop_twist_keyboard
+[0.716s] Installing camera1_publisher script to /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/teleop_twist_keyboard
+[0.716s] Installing collisionavoidance script to /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/teleop_twist_keyboard
+[0.716s] Installing detection script to /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/teleop_twist_keyboard
+[0.717s] Installing newdetection script to /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/teleop_twist_keyboard
+[0.717s] Installing teleop_twist_keyboard script to /home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/teleop_twist_keyboard
+[0.717s] writing list of installed files to '/home/leosun/ros2_ws/build/teleop_twist_keyboard/install.log'
+[0.718s] file aruco_controller.py (for module aruco_controller) not found
+[0.718s] file repulsive_avoidance.py (for module repulsive_avoidance) not found
+[0.729s] Invoked command in '/home/leosun/ros2_ws/src/teleop_twist_keyboard-dashing' returned '0': PYTHONPATH=/home/leosun/ros2_ws/build/teleop_twist_keyboard/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/teleop_twist_keyboard/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/teleop_twist_keyboard build --build-base /home/leosun/ros2_ws/build/teleop_twist_keyboard/build install --record /home/leosun/ros2_ws/build/teleop_twist_keyboard/install.log --single-version-externally-managed install_data

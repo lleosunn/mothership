@@ -1,0 +1,60 @@
+[0.557s] Invoking command in '/home/leosun/ros2_ws/src/localization': PYTHONPATH=/home/leosun/ros2_ws/build/localization/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/localization build --build-base /home/leosun/ros2_ws/build/localization/build install --record /home/leosun/ros2_ws/build/localization/install.log --single-version-externally-managed install_data
+[0.644s] running egg_info
+[0.645s] creating ../../build/localization/localization.egg-info
+[0.645s] writing ../../build/localization/localization.egg-info/PKG-INFO
+[0.645s] writing dependency_links to ../../build/localization/localization.egg-info/dependency_links.txt
+[0.645s] writing entry points to ../../build/localization/localization.egg-info/entry_points.txt
+[0.645s] writing requirements to ../../build/localization/localization.egg-info/requires.txt
+[0.645s] writing top-level names to ../../build/localization/localization.egg-info/top_level.txt
+[0.646s] writing manifest file '../../build/localization/localization.egg-info/SOURCES.txt'
+[0.646s] reading manifest file '../../build/localization/localization.egg-info/SOURCES.txt'
+[0.646s] adding license file 'LICENSE'
+[0.647s] writing manifest file '../../build/localization/localization.egg-info/SOURCES.txt'
+[0.647s] running build
+[0.647s] running build_py
+[0.647s] creating /home/leosun/ros2_ws/build/localization/build
+[0.647s] creating /home/leosun/ros2_ws/build/localization/build/lib
+[0.647s] creating /home/leosun/ros2_ws/build/localization/build/lib/localization
+[0.647s] copying localization/pose_visualizer.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+[0.647s] copying localization/__init__.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+[0.647s] copying localization/ekf.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+[0.647s] copying localization/dual_camera_detection.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+[0.648s] copying localization/camera1_publisher.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+[0.648s] copying localization/velocity_fusion.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+[0.648s] copying localization/camera0_publisher.py -> /home/leosun/ros2_ws/build/localization/build/lib/localization
+[0.648s] running install
+[0.648s] running install_lib
+[0.648s] creating /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+[0.648s] copying /home/leosun/ros2_ws/build/localization/build/lib/localization/pose_visualizer.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+[0.649s] copying /home/leosun/ros2_ws/build/localization/build/lib/localization/__init__.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+[0.649s] copying /home/leosun/ros2_ws/build/localization/build/lib/localization/ekf.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+[0.649s] copying /home/leosun/ros2_ws/build/localization/build/lib/localization/dual_camera_detection.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+[0.649s] copying /home/leosun/ros2_ws/build/localization/build/lib/localization/camera1_publisher.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+[0.649s] copying /home/leosun/ros2_ws/build/localization/build/lib/localization/velocity_fusion.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+[0.649s] copying /home/leosun/ros2_ws/build/localization/build/lib/localization/camera0_publisher.py -> /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization
+[0.649s] byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/pose_visualizer.py to pose_visualizer.cpython-310.pyc
+[0.650s] byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/__init__.py to __init__.cpython-310.pyc
+[0.650s] byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/ekf.py to ekf.cpython-310.pyc
+[0.651s] byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/dual_camera_detection.py to dual_camera_detection.cpython-310.pyc
+[0.654s] byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/camera1_publisher.py to camera1_publisher.cpython-310.pyc
+[0.654s] byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/velocity_fusion.py to velocity_fusion.cpython-310.pyc
+[0.654s] byte-compiling /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization/camera0_publisher.py to camera0_publisher.cpython-310.pyc
+[0.654s] running install_data
+[0.654s] creating /home/leosun/ros2_ws/install/localization/share/ament_index
+[0.654s] creating /home/leosun/ros2_ws/install/localization/share/ament_index/resource_index
+[0.654s] creating /home/leosun/ros2_ws/install/localization/share/ament_index/resource_index/packages
+[0.654s] copying resource/localization -> /home/leosun/ros2_ws/install/localization/share/ament_index/resource_index/packages
+[0.654s] copying package.xml -> /home/leosun/ros2_ws/install/localization/share/localization
+[0.654s] creating /home/leosun/ros2_ws/install/localization/share/localization/launch
+[0.654s] copying launch/launch.xml -> /home/leosun/ros2_ws/install/localization/share/localization/launch
+[0.655s] running install_egg_info
+[0.655s] Copying ../../build/localization/localization.egg-info to /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization-0.0.0-py3.10.egg-info
+[0.655s] running install_scripts
+[0.662s] Installing camera0_publisher script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.662s] Installing camera1_publisher script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.662s] Installing dual_camera_detection script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.663s] Installing ekf script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.663s] Installing pose_visualizer script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.663s] Installing velocity_fusion script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.663s] writing list of installed files to '/home/leosun/ros2_ws/build/localization/install.log'
+[0.677s] Invoked command in '/home/leosun/ros2_ws/src/localization' returned '0': PYTHONPATH=/home/leosun/ros2_ws/build/localization/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/localization build --build-base /home/leosun/ros2_ws/build/localization/build install --record /home/leosun/ros2_ws/build/localization/install.log --single-version-externally-managed install_data
