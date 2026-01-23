@@ -1,5 +1,8 @@
 [console_scripts]
+cbs_scenario = control.cbs_scenario:main
+move_to_goal = control.move_to_goal:main
 repulsive_avoidance = control.repulsive_avoidance:main
+simple_rotation = control.simple_rotation:main
 stay_in_place = control.stay_in_place:main
 teleop_twist_keyboard = control.teleop_twist_keyboard:main
 

@@ -1,0 +1,32 @@
+[0.496s] Invoking command in '/home/leosun/ros2_ws/src/control': PYTHONPATH=/home/leosun/ros2_ws/build/control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/control build --build-base /home/leosun/ros2_ws/build/control/build install --record /home/leosun/ros2_ws/build/control/install.log --single-version-externally-managed install_data
+[0.591s] running egg_info
+[0.592s] writing ../../build/control/control.egg-info/PKG-INFO
+[0.592s] writing dependency_links to ../../build/control/control.egg-info/dependency_links.txt
+[0.592s] writing entry points to ../../build/control/control.egg-info/entry_points.txt
+[0.592s] writing requirements to ../../build/control/control.egg-info/requires.txt
+[0.592s] writing top-level names to ../../build/control/control.egg-info/top_level.txt
+[0.593s] reading manifest file '../../build/control/control.egg-info/SOURCES.txt'
+[0.593s] adding license file 'LICENSE'
+[0.593s] writing manifest file '../../build/control/control.egg-info/SOURCES.txt'
+[0.593s] running build
+[0.593s] running build_py
+[0.594s] copying control/simple_rotation.py -> /home/leosun/ros2_ws/build/control/build/lib/control
+[0.594s] copying control/move_to_goal.py -> /home/leosun/ros2_ws/build/control/build/lib/control
+[0.594s] running install
+[0.594s] running install_lib
+[0.594s] copying /home/leosun/ros2_ws/build/control/build/lib/control/simple_rotation.py -> /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control
+[0.594s] copying /home/leosun/ros2_ws/build/control/build/lib/control/move_to_goal.py -> /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control
+[0.595s] byte-compiling /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control/simple_rotation.py to simple_rotation.cpython-310.pyc
+[0.595s] byte-compiling /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control/move_to_goal.py to move_to_goal.cpython-310.pyc
+[0.597s] running install_data
+[0.597s] running install_egg_info
+[0.598s] removing '/home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control-0.0.0-py3.10.egg-info' (and everything under it)
+[0.598s] Copying ../../build/control/control.egg-info to /home/leosun/ros2_ws/install/control/lib/python3.10/site-packages/control-0.0.0-py3.10.egg-info
+[0.598s] running install_scripts
+[0.606s] Installing move_to_goal script to /home/leosun/ros2_ws/install/control/lib/control
+[0.606s] Installing repulsive_avoidance script to /home/leosun/ros2_ws/install/control/lib/control
+[0.606s] Installing simple_rotation script to /home/leosun/ros2_ws/install/control/lib/control
+[0.606s] Installing stay_in_place script to /home/leosun/ros2_ws/install/control/lib/control
+[0.606s] Installing teleop_twist_keyboard script to /home/leosun/ros2_ws/install/control/lib/control
+[0.606s] writing list of installed files to '/home/leosun/ros2_ws/build/control/install.log'
+[0.619s] Invoked command in '/home/leosun/ros2_ws/src/control' returned '0': PYTHONPATH=/home/leosun/ros2_ws/build/control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/control build --build-base /home/leosun/ros2_ws/build/control/build install --record /home/leosun/ros2_ws/build/control/install.log --single-version-externally-managed install_data

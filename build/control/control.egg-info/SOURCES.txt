@@ -10,10 +10,15 @@ setup.py
 ../../build/control/control.egg-info/top_level.txt
 ../../build/control/control.egg-info/zip-safe
 control/__init__.py
+control/cbs.py
+control/cbs_scenario.py
+control/move_to_goal.py
 control/repulsive_avoidance.py
 control/simple_rotation.py
 control/stay_in_place.py
 control/teleop_twist_keyboard.py
+launch/cbslaunch.xml
+launch/launch.xml
 resource/control
 test/test_copyright.py
 test/test_flake8.py

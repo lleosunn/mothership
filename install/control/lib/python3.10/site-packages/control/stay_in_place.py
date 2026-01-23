@@ -23,7 +23,7 @@ class StayNode(Node):
 
         # --- Declare parameters (editable via command line or parameter file) ---
         # Define default coordinates here (modifiable in code)
-        self.default_targets = [(0.4, 0.4), (0.8, 0.8)]
+        self.default_targets = [(0.0, 0.5), (1, 0.5)]
 
         self.target_positions = []
         for i in range(self.num_agents):

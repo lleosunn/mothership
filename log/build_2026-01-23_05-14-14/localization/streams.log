@@ -1,0 +1,27 @@
+[0.580s] Invoking command in '/home/leosun/ros2_ws/src/localization': PYTHONPATH=/home/leosun/ros2_ws/build/localization/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/localization build --build-base /home/leosun/ros2_ws/build/localization/build install --record /home/leosun/ros2_ws/build/localization/install.log --single-version-externally-managed install_data
+[0.735s] running egg_info
+[0.735s] writing ../../build/localization/localization.egg-info/PKG-INFO
+[0.735s] writing dependency_links to ../../build/localization/localization.egg-info/dependency_links.txt
+[0.735s] writing entry points to ../../build/localization/localization.egg-info/entry_points.txt
+[0.735s] writing requirements to ../../build/localization/localization.egg-info/requires.txt
+[0.735s] writing top-level names to ../../build/localization/localization.egg-info/top_level.txt
+[0.739s] reading manifest file '../../build/localization/localization.egg-info/SOURCES.txt'
+[0.740s] adding license file 'LICENSE'
+[0.740s] writing manifest file '../../build/localization/localization.egg-info/SOURCES.txt'
+[0.741s] running build
+[0.741s] running build_py
+[0.742s] running install
+[0.742s] running install_lib
+[0.743s] running install_data
+[0.743s] running install_egg_info
+[0.757s] removing '/home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization-0.0.0-py3.10.egg-info' (and everything under it)
+[0.757s] Copying ../../build/localization/localization.egg-info to /home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages/localization-0.0.0-py3.10.egg-info
+[0.757s] running install_scripts
+[0.775s] Installing camera0_publisher script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.775s] Installing camera1_publisher script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.775s] Installing dual_camera_detection script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.775s] Installing ekf script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.775s] Installing pose_visualizer script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.775s] Installing velocity_fusion script to /home/leosun/ros2_ws/install/localization/lib/localization
+[0.775s] writing list of installed files to '/home/leosun/ros2_ws/build/localization/install.log'
+[0.860s] Invoked command in '/home/leosun/ros2_ws/src/localization' returned '0': PYTHONPATH=/home/leosun/ros2_ws/build/localization/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/leosun/ros2_ws/install/localization/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/localization build --build-base /home/leosun/ros2_ws/build/localization/build install --record /home/leosun/ros2_ws/build/localization/install.log --single-version-externally-managed install_data
