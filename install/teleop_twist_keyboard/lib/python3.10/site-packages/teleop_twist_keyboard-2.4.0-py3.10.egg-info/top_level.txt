@@ -1,4 +1,0 @@
-collisionavoidance
-detection
-newdetection
-teleop_twist_keyboard

@@ -1,8 +1,0 @@
-[console_scripts]
-camera0_publisher = localization.camera0_publisher:main
-camera1_publisher = localization.camera1_publisher:main
-dual_camera_detection = localization.dual_camera_detection:main
-ekf = localization.ekf:main
-pose_visualizer = localization.pose_visualizer:main
-velocity_fusion = localization.velocity_fusion:main
-

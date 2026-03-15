@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launch>
-    <node pkg="control" exec="move_to_goal" name="move_to_goal" output="screen"/>
-    <node pkg="control" exec="cbs_scenario" name="cbs_scenario" output="screen"/>
-</launch>
