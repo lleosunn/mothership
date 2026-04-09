@@ -210,7 +210,7 @@ class RepulsiveAvoidanceNode(Node):
             twist.linear.y = float(-vel_yrobot)
             twist.angular.z = float(-vel_yaw)
             self.cmd_vel_pubs[agent_index].publish(twist)
-            self.get_logger().info(f"Agent {agent_index+1} Vel: ({vel_xrobot:.3f}, {vel_yrobot:.3f}, {math.degrees(vel_yaw):.1f}°/s)")
+            # self.get_logger().info(f"Agent {agent_index+1} Vel: ({vel_xrobot:.3f}, {vel_yrobot:.3f}, {math.degrees(vel_yaw):.1f}°/s)")
 
     def publish_stop(self):
         """Publish zero velocity to stop the robot."""

@@ -99,10 +99,10 @@ class CBSPathTester(Node):
             if self.remaining[agent]:
                 x, y = self.remaining[agent].pop(0)
                 self.last_goal[agent] = (x, y)
-                self.get_logger().info(
-                    f"[Agent {agent}] New waypoint: ({x}, {y}), "
-                    f"{len(self.remaining[agent])} remaining."
-                )
+                # self.get_logger().info(
+                #     f"[Agent {agent}] New waypoint: ({x}, {y}), "
+                #     f"{len(self.remaining[agent])} remaining."
+                # )
             else:
                 # No more waypoints: keep re-publishing the last goal if we have one
                 if self.last_goal[agent] is None:
@@ -110,9 +110,9 @@ class CBSPathTester(Node):
                     continue
                 x, y = self.last_goal[agent]
                 # You can comment this log out if it's too spammy
-                self.get_logger().info(
-                    f"[Agent {agent}] Re-publishing final goal: ({x}, {y})"
-                )
+                # self.get_logger().info(
+                #     f"[Agent {agent}] Re-publishing final goal: ({x}, {y})"
+                # )
 
             # Build and publish Pose
             pose = Pose()

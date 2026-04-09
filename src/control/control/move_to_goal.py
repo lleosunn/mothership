@@ -110,10 +110,10 @@ class MultiRobotGoalController(Node):
     def goal_callback(self, msg: Pose, idx: int):
         """Update goal pose for robot idx."""
         self.goal_poses[idx] = msg
-        self.get_logger().info(
-            f"[Robot {idx+1}] New goal: "
-            f"x={msg.position.x:.3f}, y={msg.position.y:.3f}"
-        )
+        # self.get_logger().info(
+        #     f"[Robot {idx+1}] New goal: "
+        #     f"x={msg.position.x:.3f}, y={msg.position.y:.3f}"
+        # )
 
     # ---------- Control loop ----------
 

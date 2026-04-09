@@ -307,10 +307,10 @@ class DualCameraDetectionNode(Node):
             # Publish fused pose if available
             if fused_pose is not None:
                 self.fused_pose_pubs[agent_id - 1].publish(fused_pose)
-                self.get_logger().info(
-                    f"🎯 Agent {agent_id} fused pose ({fusion_source}): "
-                    f"x={fused_pose.position.x:.3f}, y={fused_pose.position.y:.3f}, z={fused_pose.position.z:.3f}"
-                )
+                # self.get_logger().info(
+                #     f"🎯 Agent {agent_id} fused pose ({fusion_source}): "
+                #     f"x={fused_pose.position.x:.3f}, y={fused_pose.position.y:.3f}, z={fused_pose.position.z:.3f}"
+                # )
 
     def destroy_node(self):
         cv2.destroyAllWindows()

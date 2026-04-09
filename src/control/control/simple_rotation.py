@@ -93,11 +93,11 @@ class TwoAgentGoalTester(Node):
         goals = self.goal_sequence[self.current_index]
         (x1, y1, th1) = goals[0]
         (x2, y2, th2) = goals[1]
-        self.get_logger().info(
-            f"New goals [index {self.current_index}]: "
-            f"Agent 1 -> ({x1:.2f}, {y1:.2f}, {math.degrees(th1):.1f}°), "
-            f"Agent 2 -> ({x2:.2f}, {y2:.2f}, {math.degrees(th2):.1f}°)"
-        )
+        # self.get_logger().info(
+        #     f"New goals [index {self.current_index}]: "
+        #     f"Agent 1 -> ({x1:.2f}, {y1:.2f}, {math.degrees(th1):.1f}°), "
+        #     f"Agent 2 -> ({x2:.2f}, {y2:.2f}, {math.degrees(th2):.1f}°)"
+        # )
 
 
 def main(args=None):
