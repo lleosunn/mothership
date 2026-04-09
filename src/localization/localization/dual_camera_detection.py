@@ -4,7 +4,7 @@ import cv2.aruco as aruco
 import numpy as np
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Pose, PoseStamped
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from scipy.spatial.transform import Rotation as R
@@ -79,8 +79,12 @@ class DualCameraDetectionNode(Node):
         }
 
         # Publishers for fused poses (one per agent)
+        # self.fused_pose_pubs = [
+        #     self.create_publisher(Pose, f'/pose_{i+1}', 10)
+        #     for i in range(self.num_agents)
+        # ]
         self.fused_pose_pubs = [
-            self.create_publisher(Pose, f'/pose_{i+1}', 10)
+            self.create_publisher(PoseStamped, f'/fused_pose_{i+1}', 10)
             for i in range(self.num_agents)
         ]
 
@@ -305,7 +309,11 @@ class DualCameraDetectionNode(Node):
 
             # Publish fused pose if available
             if fused_pose is not None:
-                self.fused_pose_pubs[agent_id - 1].publish(fused_pose)
+                stamped = PoseStamped()
+                stamped.header.stamp = self.get_clock().now().to_msg()
+                stamped.header.frame_id = 'world'
+                stamped.pose = fused_pose
+                self.fused_pose_pubs[agent_id - 1].publish(stamped)
                 # self.get_logger().info(
                 #     f"🎯 Agent {agent_id} fused pose ({fusion_source}): "
                 #     f"x={fused_pose.position.x:.3f}, y={fused_pose.position.y:.3f}, z={fused_pose.position.z:.3f}"

@@ -3,6 +3,6 @@
     <node pkg="localization" exec="camera0_publisher" name="camera0_publisher" output="screen"/>
     <node pkg="localization" exec="camera1_publisher" name="camera1_publisher" output="screen"/>
     <node pkg="localization" exec="dual_camera_detection" name="dual_camera_detection" output="screen"/>
-    <node pkg="localization" exec="velocity_fusion" name="velocity_fusion" output="screen"/>
-    <node pkg="localization" exec="ekf" name="ekf" output="screen"/>
+    <!-- <node pkg="localization" exec="velocity_fusion" name="velocity_fusion" output="screen"/> -->
+    <!-- <node pkg="localization" exec="ekf" name="ekf" output="screen"/> -->
 </launch>
