@@ -5,7 +5,7 @@ import numpy as np
 import rclpy
 from rclpy.node import Node
 
-from geometry_msgs.msg import Pose, Twist, Quaternion
+from geometry_msgs.msg import Pose, PoseStamped, Twist, Quaternion
 
 
 def wrap_angle(a: float) -> float:
@@ -60,7 +60,7 @@ class SimpleEkfFuser(Node):
       - /twist_N (geometry_msgs/Twist)  -> accurate body-frame velocities
 
     Publishes:
-      - /fused_pose_N (geometry_msgs/Pose) -> smoothed global pose
+      - /fused_pose_N (geometry_msgs/PoseStamped) -> smoothed global pose
     """
 
     def __init__(self):
@@ -106,8 +106,7 @@ class SimpleEkfFuser(Node):
             )
             self.twist_subs.append(twist_sub)
 
-            # Fused pose publisher
-            pose_pub = self.create_publisher(Pose, f'/fused_pose_{robot_id}', 10)
+            pose_pub = self.create_publisher(PoseStamped, f'/fused_pose_{robot_id}', 10)
             self.pose_pubs[robot_id] = pose_pub
 
         # Prediction timer (50 Hz)
@@ -242,13 +241,16 @@ class SimpleEkfFuser(Node):
         Publish fused pose for a robot.
         """
         state = self.robot_states[robot_id]
-        pose = Pose()
-        pose.position.x = float(state.x[0, 0])
-        pose.position.y = float(state.x[1, 0])
-        pose.position.z = float(state.last_z_height)
-        pose.orientation = quat_from_yaw(float(state.x[2, 0]))
 
-        self.pose_pubs[robot_id].publish(pose)
+        msg = PoseStamped()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = 'world'
+        msg.pose.position.x = float(state.x[0, 0])
+        msg.pose.position.y = float(state.x[1, 0])
+        msg.pose.position.z = float(state.last_z_height)
+        msg.pose.orientation = quat_from_yaw(float(state.x[2, 0]))
+
+        self.pose_pubs[robot_id].publish(msg)
 
 
 def main():

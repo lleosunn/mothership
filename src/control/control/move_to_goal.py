@@ -3,7 +3,7 @@ import math
 import numpy as np
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Pose, Twist
+from geometry_msgs.msg import Pose, PoseStamped, Twist
 
 
 def yaw_from_quat(q):
@@ -63,9 +63,8 @@ class MultiRobotGoalController(Node):
         for robot_id in range(1, self.num_agents + 1):
             idx = robot_id - 1
 
-            # Current fused pose
             pose_sub = self.create_subscription(
-                Pose,
+                PoseStamped,
                 f'/fused_pose_{robot_id}',
                 lambda msg, i=idx: self.pose_callback(msg, i),
                 10
@@ -102,9 +101,9 @@ class MultiRobotGoalController(Node):
 
     # ---------- Callbacks ----------
 
-    def pose_callback(self, msg: Pose, idx: int):
+    def pose_callback(self, msg: PoseStamped, idx: int):
         """Update current fused pose for robot idx."""
-        self.current_poses[idx] = msg
+        self.current_poses[idx] = msg.pose
         self.last_pose_times[idx] = self.get_clock().now()
 
     def goal_callback(self, msg: Pose, idx: int):

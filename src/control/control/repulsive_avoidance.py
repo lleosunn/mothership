@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Pose, Twist
+from geometry_msgs.msg import Pose, PoseStamped, Twist
 import math
 import numpy as np
 import sys
@@ -16,7 +16,7 @@ class RepulsiveAvoidanceNode(Node):
         for i in range(self.num_agents):
             self.pose_subs.append(
                 self.create_subscription(
-                    Pose,
+                    PoseStamped,
                     f'/fused_pose_{i+1}',
                     lambda msg, idx=i: self.pose_callback(msg, idx),
                     10
@@ -92,7 +92,7 @@ class RepulsiveAvoidanceNode(Node):
 
     def pose_callback(self, msg, agent_index):
         """Update current pose from ArUco detection."""
-        self.current_poses[agent_index] = msg
+        self.current_poses[agent_index] = msg.pose
         if agent_index == 0:
             self.last_pose_time = self.get_clock().now()
 
