@@ -25,7 +25,7 @@ class Camera0Publisher(Node):
         self.get_logger().info("📷 Camera0 publisher started on /camera0/image_raw")
 
         # Timer for publishing at ~30 Hz
-        self.timer = self.create_timer(1/30.0, self.timer_callback)
+        self.timer = self.create_timer(1/15.0, self.timer_callback)
 
     def timer_callback(self):
         ret, frame = self.cap.read()
@@ -33,10 +33,8 @@ class Camera0Publisher(Node):
             self.get_logger().warning("⚠️ Failed to read frame from webcam 0.")
             return
 
-        # Convert to ROS Image message
-        msg = self.bridge.cv2_to_imgmsg(frame, encoding='bgr8')
-
-        # Publish
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        msg = self.bridge.cv2_to_imgmsg(gray, encoding='mono8')
         self.pub.publish(msg)
 
     def destroy_node(self):

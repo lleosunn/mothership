@@ -145,13 +145,13 @@ class DualCameraDetectionNode(Node):
     def camera0_callback(self, msg):
         """Process images from camera0."""
         try:
-            frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+            gray = self.bridge.imgmsg_to_cv2(msg, desired_encoding='mono8')
         except Exception as e:
             self.get_logger().error(f"❌ Failed to convert camera0 image: {e}")
             return
 
         self.process_frame(
-            frame,
+            gray,
             camera_id=0,
             have_world=self.camera0_have_world,
             T_world_cam=self.camera0_T_world_cam,
@@ -161,13 +161,13 @@ class DualCameraDetectionNode(Node):
     def camera1_callback(self, msg):
         """Process images from camera1."""
         try:
-            frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+            gray = self.bridge.imgmsg_to_cv2(msg, desired_encoding='mono8')
         except Exception as e:
             self.get_logger().error(f"❌ Failed to convert camera1 image: {e}")
             return
 
         self.process_frame(
-            frame,
+            gray,
             camera_id=1,
             have_world=self.camera1_have_world,
             T_world_cam=self.camera1_T_world_cam,
@@ -182,9 +182,8 @@ class DualCameraDetectionNode(Node):
         self.camera1_have_world = True
         self.camera1_T_world_cam = T_world_cam
 
-    def process_frame(self, frame, camera_id, have_world, T_world_cam, set_world_callback):
-        """Process a frame for ArUco detection and store poses."""
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    def process_frame(self, gray, camera_id, have_world, T_world_cam, set_world_callback):
+        """Process a grayscale frame for ArUco detection and store poses."""
         corners, ids, _ = aruco.detectMarkers(gray, self.aruco_dict, parameters=self.parameters)
 
         if ids is None:
