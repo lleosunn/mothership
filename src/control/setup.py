@@ -33,6 +33,8 @@ setup(
             'move_to_goal = control.move_to_goal:main',
             'simple_rotation = control.simple_rotation:main',
             'cbs_scenario = control.cbs_scenario:main',
+            'swap_planner = control.swap_planner:main',
+            'swap_motion = control.swap_motion:main',
         ],
     },
 )

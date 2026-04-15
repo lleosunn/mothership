@@ -16,33 +16,41 @@ PATH_TO_YOUR_IMAGES = 'charuco_images'
 # ------------------------------
 
 def calibrate_and_save_parameters():
-    # Define the aruco dictionary and charuco board
     dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
     board = cv2.aruco.CharucoBoard((SQUARES_VERTICALLY, SQUARES_HORIZONTALLY), SQUARE_LENGTH, MARKER_LENGTH, dictionary)
     params = cv2.aruco.DetectorParameters()
+    detector = cv2.aruco.ArucoDetector(dictionary, params)
+    charuco_detector = cv2.aruco.CharucoDetector(board)
 
-    # Load PNG images from folder
     image_files = [os.path.join(PATH_TO_YOUR_IMAGES, f) for f in os.listdir(PATH_TO_YOUR_IMAGES) if f.endswith(".png")]
-    image_files.sort()  # Ensure files are in order
+    image_files.sort()
 
     all_charuco_corners = []
     all_charuco_ids = []
 
     for image_file in image_files:
         image = cv2.imread(image_file)
-        image_copy = image.copy()
-        marker_corners, marker_ids, _ = cv2.aruco.detectMarkers(image, dictionary, parameters=params)
-        
-        # If at least one marker is detected
-        if len(marker_ids) > 0:
-            cv2.aruco.drawDetectedMarkers(image_copy, marker_corners, marker_ids)
-            charuco_retval, charuco_corners, charuco_ids = cv2.aruco.interpolateCornersCharuco(marker_corners, marker_ids, image, board)
-            if charuco_retval:
-                all_charuco_corners.append(charuco_corners)
-                all_charuco_ids.append(charuco_ids)
+        if image is None:
+            print(f"  ⚠ Could not read {image_file}, skipping")
+            continue
 
-    # Calibrate camera
-    retval, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.aruco.calibrateCameraCharuco(all_charuco_corners, all_charuco_ids, board, image.shape[:2], None, None)
+        charuco_corners, charuco_ids, marker_corners, marker_ids = charuco_detector.detectBoard(image)
+
+        if charuco_corners is not None and len(charuco_corners) > 3:
+            all_charuco_corners.append(charuco_corners)
+            all_charuco_ids.append(charuco_ids)
+            print(f"  ✓ {image_file}: {len(charuco_corners)} corners")
+        else:
+            n = 0 if charuco_corners is None else len(charuco_corners)
+            print(f"  ✗ {image_file}: only {n} corners, skipping")
+
+    if len(all_charuco_corners) == 0:
+        print("\n❌ No charuco corners detected in any image. Check that your board config matches your printed board.")
+        return
+
+    retval, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.aruco.calibrateCameraCharuco(
+        all_charuco_corners, all_charuco_ids, board, image.shape[:2], None, None
+    )
 
     # Print calibration results
     print(f"\n{'='*50}")

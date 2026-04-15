@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- Localization must publish /fused_pose_1 and /fused_pose_2. -->
+  <!-- Cardinal swap motion + 2 s dwells; no move_to_goal / goal_pose. -->
+  <node pkg="control" exec="swap_motion" name="swap_motion" output="screen">
+    <param name="cell_size_m" value="0.25"/>
+    <param name="origin_x" value="0.0"/>
+    <param name="origin_y" value="0.0"/>
+    <param name="dwell_between_primitives_s" value="2.0"/>
+    <param name="control_rate" value="20.0"/>
+    <param name="kp_linear" value="1.8"/>
+    <param name="max_linear" value="0.22"/>
+    <param name="position_close_m" value="0.06"/>
+    <param name="primitive_timeout_s" value="18.0"/>
+    <param name="plan_poll_s" value="0.5"/>
+  </node>
+</launch>
