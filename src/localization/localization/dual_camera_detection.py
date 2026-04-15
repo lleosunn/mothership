@@ -108,18 +108,18 @@ class DualCameraDetectionNode(Node):
 
         # Camera calibration (same for both cameras - adjust if different)
         self.camera_matrix = np.array([
-            [628.2060513684523, 0.0, 334.5792569768152],
-            [0.0, 627.5840905155266, 252.94919633119522],
+            [461.49447270577565, 0.0, 286.5283313705204],
+            [0.0, 505.5119304788032, 288.3635752937504],
             [0.0, 0.0, 1.0]
         ], dtype=np.float32)
 
         self.dist_coeffs = np.array([
             [
-                0.018873878948639438,
-                0.1382933190183097,
-                -0.0014933935941659632,
-                0.006031010738591554,
-                -0.7083862634771421
+                -0.15985923462872242,
+                0.2958274349322969,
+                0.12572666291334014,
+                0.007692306095435139,
+                -0.22267488258902854
             ]
         ], dtype=np.float32)
 
@@ -242,10 +242,12 @@ class DualCameraDetectionNode(Node):
                 pose_msg.orientation.z = float(q_xyzw[2])
                 pose_msg.orientation.w = float(q_xyzw[3])
 
-                # Store pose with timestamp for fusion
+                cam_to_marker_dist = float(np.linalg.norm(tvec))
+
                 self.camera_poses[camera_id][marker_id] = {
                     'pose': pose_msg,
-                    'timestamp': time.time()
+                    'timestamp': time.time(),
+                    'distance': cam_to_marker_dist,
                 }
 
                 self.get_logger().debug(
@@ -275,27 +277,33 @@ class DualCameraDetectionNode(Node):
             fusion_source = ""
 
             if cam0_valid and cam1_valid:
-                # Both cameras see the marker - fuse by averaging
                 p0 = cam0_data['pose']
                 p1 = cam1_data['pose']
+                d0 = cam0_data.get('distance', 1.0)
+                d1 = cam1_data.get('distance', 1.0)
+
+                # Inverse-distance weights: closer camera gets more influence
+                w0 = 1.0 / max(d0, 1e-6)
+                w1 = 1.0 / max(d1, 1e-6)
+                total = w0 + w1
+                w0 /= total
+                w1 /= total
 
                 fused_pose = Pose()
-                # Average positions
-                fused_pose.position.x = (p0.position.x + p1.position.x) / 2.0
-                fused_pose.position.y = (p0.position.y + p1.position.y) / 2.0
-                fused_pose.position.z = (p0.position.z + p1.position.z) / 2.0
+                fused_pose.position.x = w0 * p0.position.x + w1 * p1.position.x
+                fused_pose.position.y = w0 * p0.position.y + w1 * p1.position.y
+                fused_pose.position.z = w0 * p0.position.z + w1 * p1.position.z
 
-                # SLERP quaternions (t=0.5 for equal weight)
                 q0 = [p0.orientation.x, p0.orientation.y, p0.orientation.z, p0.orientation.w]
                 q1 = [p1.orientation.x, p1.orientation.y, p1.orientation.z, p1.orientation.w]
-                q_fused = slerp_quaternion(q0, q1, 0.5)
+                q_fused = slerp_quaternion(q0, q1, w1)
 
                 fused_pose.orientation.x = float(q_fused[0])
                 fused_pose.orientation.y = float(q_fused[1])
                 fused_pose.orientation.z = float(q_fused[2])
                 fused_pose.orientation.w = float(q_fused[3])
 
-                fusion_source = "both cameras"
+                fusion_source = f"both (w0={w0:.2f}, w1={w1:.2f})"
 
             elif cam0_valid:
                 # Only camera0 sees the marker - use its data

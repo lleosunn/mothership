@@ -8,11 +8,11 @@ import argparse
 parser = argparse.ArgumentParser(description="Calibrate camera from checkerboard images")
 parser.add_argument("--rows", type=int, default=8, help="Inner corner rows (squares - 1)")
 parser.add_argument("--cols", type=int, default=5, help="Inner corner cols (squares - 1)")
-parser.add_argument("--square-size", type=float, default=0.03, help="Square size in meters")
+parser.add_argument("--square-size", type=float, default=0.025, help="Square size in meters")
 parser.add_argument(
     "--images",
     type=str,
-    default="charuco_images",
+    default="my_cal_images",
     help="Directory with calibration images (.png, .jpg, .jpeg)",
 )
 parser.add_argument("-o", "--output", type=str, default="calibration.json", help="Output calibration file")
