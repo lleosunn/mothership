@@ -9,13 +9,23 @@ parser = argparse.ArgumentParser(description="Calibrate camera from checkerboard
 parser.add_argument("--rows", type=int, default=8, help="Inner corner rows (squares - 1)")
 parser.add_argument("--cols", type=int, default=5, help="Inner corner cols (squares - 1)")
 parser.add_argument("--square-size", type=float, default=0.03, help="Square size in meters")
-parser.add_argument("--images", type=str, default="charuco_images", help="Directory with captured .png images")
+parser.add_argument(
+    "--images",
+    type=str,
+    default="charuco_images",
+    help="Directory with calibration images (.png, .jpg, .jpeg)",
+)
 parser.add_argument("-o", "--output", type=str, default="calibration.json", help="Output calibration file")
 args = parser.parse_args()
 
 PATTERN_SIZE = (args.cols, args.rows)
 SQUARE_SIZE = args.square_size
 PATH_TO_IMAGES = args.images
+
+if not os.path.isdir(PATH_TO_IMAGES):
+    print(f"❌ Image directory does not exist: {PATH_TO_IMAGES}")
+    print("   Create it and add image frames (.png / .jpg), or pass --images /path/to/your/folder")
+    exit(1)
 
 objp = np.zeros((PATTERN_SIZE[0] * PATTERN_SIZE[1], 3), np.float32)
 objp[:, :2] = np.mgrid[0:PATTERN_SIZE[0], 0:PATTERN_SIZE[1]].T.reshape(-1, 2) * SQUARE_SIZE
@@ -24,14 +34,23 @@ obj_points = []
 img_points = []
 image_size = None
 
-image_files = sorted([
+_IMAGE_SUFFIXES = (".png", ".jpg", ".jpeg")
+
+
+def _is_image_file(name):
+    lower = name.lower()
+    return any(lower.endswith(s) for s in _IMAGE_SUFFIXES)
+
+
+image_files = sorted(
     os.path.join(PATH_TO_IMAGES, f)
     for f in os.listdir(PATH_TO_IMAGES)
-    if f.lower().endswith(".png")
-])
+    if _is_image_file(f)
+)
 
 if not image_files:
-    print(f"❌ No .png images found in {PATH_TO_IMAGES}/")
+    print(f"❌ No images found in {PATH_TO_IMAGES}/")
+    print(f"   Add files with one of these extensions: {', '.join(_IMAGE_SUFFIXES)}")
     exit(1)
 
 print(f"Processing {len(image_files)} images looking for {PATTERN_SIZE[0]}x{PATTERN_SIZE[1]} inner corners...\n")
