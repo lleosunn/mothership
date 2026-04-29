@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="agent_id" default="4"/>
+  <arg name="dx" default="0.3"/>
+  <arg name="dy" default="0.0"/>
+  <arg name="tolerance" default="0.05"/>
+
+  <!-- Localization must already be running (fused_pose_{agent_id} available). -->
+  <node pkg="control" exec="move_to_goal" name="move_to_goal" output="screen"/>
+  <node pkg="control" exec="smoke_test" name="smoke_test" output="screen">
+    <param name="agent_id" value="$(var agent_id)"/>
+    <param name="dx" value="$(var dx)"/>
+    <param name="dy" value="$(var dy)"/>
+    <param name="tolerance" value="$(var tolerance)"/>
+  </node>
+</launch>

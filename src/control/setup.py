@@ -34,7 +34,8 @@ setup(
             'simple_rotation = control.simple_rotation:main',
             'cbs_scenario = control.cbs_scenario:main',
             'swap_planner = control.swap_planner:main',
-            'swap_motion = control.swap_motion:main',
+            'smoke_test = control.smoke_test:main',
+            'formation = control.formation:main',
         ],
     },
 )

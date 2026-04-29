@@ -65,7 +65,7 @@ class DualCameraDetectionNode(Node):
     def __init__(self):
         super().__init__('dual_camera_detection')
 
-        self.num_agents = 2
+        self.agent_ids = [1, 2, 3, 4, 7]
         self.bridge = CvBridge()
 
         # Timeout in seconds - if no message received within this time, consider camera as not seeing marker
@@ -74,19 +74,15 @@ class DualCameraDetectionNode(Node):
         # Storage for poses from each camera for each agent
         # camera_poses[camera_id][agent_id] = {'pose': Pose, 'timestamp': float}
         self.camera_poses = {
-            0: {i: {'pose': None, 'timestamp': 0.0} for i in range(1, self.num_agents + 1)},
-            1: {i: {'pose': None, 'timestamp': 0.0} for i in range(1, self.num_agents + 1)}
+            0: {i: {'pose': None, 'timestamp': 0.0} for i in self.agent_ids},
+            1: {i: {'pose': None, 'timestamp': 0.0} for i in self.agent_ids},
         }
 
-        # Publishers for fused poses (one per agent)
-        # self.fused_pose_pubs = [
-        #     self.create_publisher(Pose, f'/pose_{i+1}', 10)
-        #     for i in range(self.num_agents)
-        # ]
-        self.fused_pose_pubs = [
-            self.create_publisher(PoseStamped, f'/fused_pose_{i+1}', 10)
-            for i in range(self.num_agents)
-        ]
+        # Publishers for fused poses (one per agent), keyed by marker ID
+        self.fused_pose_pubs = {
+            i: self.create_publisher(PoseStamped, f'/fused_pose_{i}', 10)
+            for i in self.agent_ids
+        }
 
         # Subscribers for camera image topics
         self.camera0_sub = self.create_subscription(
@@ -224,7 +220,7 @@ class DualCameraDetectionNode(Node):
                 self.get_logger().info(f"🌍 Camera{camera_id}: Marker 0 sets WORLD frame.")
 
             # ROBOT MARKERS
-            if have_world and T_world_cam is not None and 1 <= marker_id <= self.num_agents:
+            if have_world and T_world_cam is not None and marker_id in self.agent_ids:
                 T_world_m = T_world_cam @ T_cam_marker
                 pos = T_world_m[:3, 3]
                 R_mat = T_world_m[:3, :3]
@@ -263,7 +259,7 @@ class DualCameraDetectionNode(Node):
         """Compute and publish fused poses for each agent."""
         current_time = time.time()
 
-        for agent_id in range(1, self.num_agents + 1):
+        for agent_id in self.agent_ids:
             cam0_data = self.camera_poses[0][agent_id]
             cam1_data = self.camera_poses[1][agent_id]
 
@@ -321,7 +317,7 @@ class DualCameraDetectionNode(Node):
                 stamped.header.stamp = self.get_clock().now().to_msg()
                 stamped.header.frame_id = 'world'
                 stamped.pose = fused_pose
-                self.fused_pose_pubs[agent_id - 1].publish(stamped)
+                self.fused_pose_pubs[agent_id].publish(stamped)
                 # self.get_logger().info(
                 #     f"🎯 Agent {agent_id} fused pose ({fusion_source}): "
                 #     f"x={fused_pose.position.x:.3f}, y={fused_pose.position.y:.3f}, z={fused_pose.position.z:.3f}"

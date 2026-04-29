@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- Localization must already be running. -->
+  <node pkg="control" exec="move_to_goal" name="move_to_goal" output="screen"/>
+  <node pkg="control" exec="formation" name="formation_planner" output="screen">
+    <param name="axis" value="horizontal"/>
+    <param name="spacing_m" value="0.60"/>
+    <param name="discovery_timeout_s" value="5.0"/>
+    <param name="min_agents" value="2"/>
+  </node>
+</launch>
