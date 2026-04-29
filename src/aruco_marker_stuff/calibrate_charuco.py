@@ -69,7 +69,7 @@ def calibrate_and_save_parameters():
         }
     }
     
-    with open('calibration.json', 'w') as f:
+    with open('calibration_cam0.json', 'w') as f:
         json.dump(calibration_data, f, indent=4)
     
     print("✅ Calibration data saved to calibration.json")
