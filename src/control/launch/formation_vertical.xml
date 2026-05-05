@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
   <!-- Localization must already be running. -->
+  <node pkg="localization" exec="pose_logger" name="pose_logger" output="screen"/>
   <node pkg="control" exec="move_to_goal" name="move_to_goal" output="screen"/>
   <node pkg="control" exec="formation" name="formation_planner" output="screen">
     <param name="axis" value="vertical"/>

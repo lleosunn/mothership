@@ -6,6 +6,7 @@
   <arg name="tolerance" default="0.05"/>
 
   <!-- Localization must already be running (fused_pose_{agent_id} available). -->
+  <node pkg="localization" exec="pose_logger" name="pose_logger" output="screen"/>
   <node pkg="control" exec="move_to_goal" name="move_to_goal" output="screen"/>
   <node pkg="control" exec="smoke_test" name="smoke_test" output="screen">
     <param name="agent_id" value="$(var agent_id)"/>

@@ -54,8 +54,8 @@ class SwapPlanner(Node):
         self.declare_parameter('origin_y', 0.0)
         self.declare_parameter('step_period_s', 1.0)
         self.declare_parameter('plan_retry_s', 0.5)
-        self.declare_parameter('align_tolerance_m', 0.05)
-        self.declare_parameter('align_yaw_tolerance_rad', 0.10)
+        self.declare_parameter('align_tolerance_m', 0.10)
+        self.declare_parameter('align_yaw_tolerance_rad', 0.20)
         self.declare_parameter('align_check_rate', 10.0)
         self.declare_parameter('discovery_timeout_s', 3.0)
         self.declare_parameter('min_agents', 2)
@@ -234,19 +234,37 @@ class SwapPlanner(Node):
             self._goal_pubs[a].publish(pose)
 
         self._phase = 'ALIGN'
+        self._align_start = _time.monotonic()
+        self._align_max_s = 10.0
+        self._align_log_interval = 1.0
+        self._align_last_log = 0.0
         align_rate = float(self.get_parameter('align_check_rate').value)
         self._align_timer = self.create_timer(1.0 / align_rate, self._check_alignment)
         self.get_logger().info(
-            'ALIGN phase: robots moving to grid cell centers with yaw=0. '
+            f'ALIGN phase (max {self._align_max_s:.0f}s): '
+            f'robots moving to grid cell centers with yaw=0. '
             f'Targets: {self._align_targets}'
         )
 
+    def _finish_align(self):
+        self._align_timer.cancel()
+        self._align_timer = None
+        self._phase = 'EXECUTE'
+        for a in self._agents:
+            self._remaining[a].pop(0)
+        period = float(self.get_parameter('step_period_s').value)
+        self._step_timer = self.create_timer(period, self._step_callback)
+
     def _check_alignment(self):
+        elapsed = _time.monotonic() - self._align_start
         all_aligned = True
+        status_parts = []
+
         for a in self._agents:
             fused = self._fused[a]
             if fused is None:
                 all_aligned = False
+                status_parts.append(f'  Agent {a}: no pose')
                 continue
 
             tx, ty = self._align_targets[a]
@@ -256,21 +274,41 @@ class SwapPlanner(Node):
 
             pos_err = math.hypot(tx - cx, ty - cy)
             yaw_err = abs(cyaw)
+            ok = pos_err <= self._align_tol and yaw_err <= self._align_yaw_tol
 
-            if pos_err > self._align_tol or yaw_err > self._align_yaw_tol:
+            if not ok:
                 all_aligned = False
+
+            status_parts.append(
+                f'  Agent {a}: pos_err={pos_err:.3f}m yaw_err={math.degrees(yaw_err):.1f}° '
+                f'({"OK" if ok else "moving"})'
+            )
 
             self._goal_pubs[a].publish(self._last_goal[a])
 
+        if elapsed - self._align_last_log >= self._align_log_interval:
+            self._align_last_log = elapsed
+            self.get_logger().info(
+                f'ALIGN [{elapsed:.1f}s / {self._align_max_s:.0f}s]:'
+            )
+            for part in status_parts:
+                self.get_logger().info(part)
+
         if all_aligned:
-            self._align_timer.cancel()
-            self._align_timer = None
-            self._phase = 'EXECUTE'
-            self.get_logger().info('ALIGN complete. Starting CBS path execution.')
-            for a in self._agents:
-                self._remaining[a].pop(0)
-            period = float(self.get_parameter('step_period_s').value)
-            self._step_timer = self.create_timer(period, self._step_callback)
+            self.get_logger().info(
+                f'ALIGN complete after {elapsed:.1f}s. Starting CBS path execution.'
+            )
+            self._finish_align()
+            return
+
+        if elapsed >= self._align_max_s:
+            self.get_logger().warn(
+                f'ALIGN timeout ({self._align_max_s:.0f}s). '
+                f'Proceeding with execution anyway.'
+            )
+            for part in status_parts:
+                self.get_logger().warn(part)
+            self._finish_align()
 
     def _step_callback(self):
         yaw = 0.0

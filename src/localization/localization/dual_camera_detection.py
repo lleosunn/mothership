@@ -8,6 +8,7 @@ from geometry_msgs.msg import Pose, PoseStamped
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from scipy.spatial.transform import Rotation as R
+from functools import partial
 import time
 
 
@@ -61,9 +62,12 @@ def slerp_quaternion(q1, q2, t):
     return q1 * np.cos(theta) + q_perp * np.sin(theta)
 
 
-class DualCameraDetectionNode(Node):
+class MultiCameraDetectionNode(Node):
     def __init__(self):
-        super().__init__('dual_camera_detection')
+        super().__init__('multi_camera_detection')
+
+        self.declare_parameter('num_cameras', 2)
+        self.num_cameras = self.get_parameter('num_cameras').value
 
         self.agent_ids = [1, 2, 3, 4, 7]
         self.bridge = CvBridge()
@@ -74,8 +78,8 @@ class DualCameraDetectionNode(Node):
         # Storage for poses from each camera for each agent
         # camera_poses[camera_id][agent_id] = {'pose': Pose, 'timestamp': float}
         self.camera_poses = {
-            0: {i: {'pose': None, 'timestamp': 0.0} for i in self.agent_ids},
-            1: {i: {'pose': None, 'timestamp': 0.0} for i in self.agent_ids},
+            cam: {i: {'pose': None, 'timestamp': 0.0} for i in self.agent_ids}
+            for cam in range(self.num_cameras)
         }
 
         # Publishers for fused poses (one per agent), keyed by marker ID
@@ -84,25 +88,27 @@ class DualCameraDetectionNode(Node):
             for i in self.agent_ids
         }
 
-        # Subscribers for camera image topics
-        self.camera0_sub = self.create_subscription(
-            Image,
-            '/camera0/image_raw',
-            self.camera0_callback,
-            10
-        )
-        self.camera1_sub = self.create_subscription(
-            Image,
-            '/camera1/image_raw',
-            self.camera1_callback,
-            10
-        )
+        # Per-camera world frame transforms
+        self.world_transforms = {
+            cam: {'have_world': False, 'T_world_cam': None}
+            for cam in range(self.num_cameras)
+        }
+
+        # Subscribers for camera image topics (created in a loop)
+        self.camera_subs = {}
+        for cam in range(self.num_cameras):
+            self.camera_subs[cam] = self.create_subscription(
+                Image,
+                f'/camera{cam}/image_raw',
+                partial(self._camera_callback, camera_id=cam),
+                10
+            )
 
         # --- ArUco setup ---
         self.aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_6X6_250)
-        self.parameters = self.create_detector_parameters()
+        self.parameters = self._create_detector_parameters()
 
-        # Camera calibration (same for both cameras - adjust if different)
+        # Camera calibration (same for all cameras - adjust if different)
         self.camera_matrix = np.array([
             [192.60922574, 0.0, 325.85340988],
             [0.0, 191.78659388, 276.03173316],
@@ -121,20 +127,15 @@ class DualCameraDetectionNode(Node):
 
         self.marker_size = 0.1585  # units are in meters
 
-        # World frame transforms for each camera
-        self.camera0_have_world = False
-        self.camera0_T_world_cam = None
-        self.camera1_have_world = False
-        self.camera1_T_world_cam = None
-
         # Timer as fallback to ensure output even when detections are sparse
         self.fusion_timer = self.create_timer(0.1, self.publish_fused_poses)
 
-        self.get_logger().info("📷 Dual Camera Detection Node started.")
-        self.get_logger().info("   Subscribing to /camera0/image_raw and /camera1/image_raw")
-        self.get_logger().info("   Publishing fused poses to /fused/pose_*")
+        topics = ", ".join(f"/camera{c}/image_raw" for c in range(self.num_cameras))
+        self.get_logger().info(f"📷 Multi Camera Detection Node started ({self.num_cameras} cameras).")
+        self.get_logger().info(f"   Subscribing to {topics}")
+        self.get_logger().info("   Publishing fused poses to /fused_pose_*")
 
-    def create_detector_parameters(self):
+    def _create_detector_parameters(self):
         if hasattr(aruco, "DetectorParameters"):
             return aruco.DetectorParameters()
         elif hasattr(aruco, "DetectorParameters_create"):
@@ -142,47 +143,23 @@ class DualCameraDetectionNode(Node):
         else:
             raise RuntimeError("Cannot find DetectorParameters in cv2.aruco")
 
-    def camera0_callback(self, msg):
-        """Process images from camera0."""
+    def _camera_callback(self, msg, camera_id):
+        """Process images from any camera."""
         try:
             gray = self.bridge.imgmsg_to_cv2(msg, desired_encoding='mono8')
         except Exception as e:
-            self.get_logger().error(f"❌ Failed to convert camera0 image: {e}")
+            self.get_logger().error(f"❌ Failed to convert camera{camera_id} image: {e}")
             return
 
-        self.process_frame(
+        wt = self.world_transforms[camera_id]
+        self._process_frame(
             gray,
-            camera_id=0,
-            have_world=self.camera0_have_world,
-            T_world_cam=self.camera0_T_world_cam,
-            set_world_callback=self.set_camera0_world
+            camera_id=camera_id,
+            have_world=wt['have_world'],
+            T_world_cam=wt['T_world_cam'],
         )
 
-    def camera1_callback(self, msg):
-        """Process images from camera1."""
-        try:
-            gray = self.bridge.imgmsg_to_cv2(msg, desired_encoding='mono8')
-        except Exception as e:
-            self.get_logger().error(f"❌ Failed to convert camera1 image: {e}")
-            return
-
-        self.process_frame(
-            gray,
-            camera_id=1,
-            have_world=self.camera1_have_world,
-            T_world_cam=self.camera1_T_world_cam,
-            set_world_callback=self.set_camera1_world
-        )
-
-    def set_camera0_world(self, T_world_cam):
-        self.camera0_have_world = True
-        self.camera0_T_world_cam = T_world_cam
-
-    def set_camera1_world(self, T_world_cam):
-        self.camera1_have_world = True
-        self.camera1_T_world_cam = T_world_cam
-
-    def process_frame(self, gray, camera_id, have_world, T_world_cam, set_world_callback):
+    def _process_frame(self, gray, camera_id, have_world, T_world_cam):
         """Process a grayscale frame for ArUco detection and store poses."""
         corners, ids, _ = aruco.detectMarkers(gray, self.aruco_dict, parameters=self.parameters)
 
@@ -208,13 +185,13 @@ class DualCameraDetectionNode(Node):
             if not success:
                 continue
 
-            # Convert OpenCV vectors → full transform matrix
             T_cam_marker = rvec_tvec_to_T(rvec, tvec)
 
             # Marker 0 = WORLD FRAME ORIGIN
             if marker_id == 0:
                 new_T_world_cam = invert_T(T_cam_marker)
-                set_world_callback(new_T_world_cam)
+                self.world_transforms[camera_id]['have_world'] = True
+                self.world_transforms[camera_id]['T_world_cam'] = new_T_world_cam
                 T_world_cam = new_T_world_cam
                 have_world = True
                 self.get_logger().info(f"🌍 Camera{camera_id}: Marker 0 sets WORLD frame.")
@@ -228,7 +205,6 @@ class DualCameraDetectionNode(Node):
                 q_xyzw = rot.as_quat()
                 roll, pitch, yaw = rot.as_euler('xyz', degrees=True)
 
-                # Create pose message
                 pose_msg = Pose()
                 pose_msg.position.x = float(pos[0])
                 pose_msg.position.y = float(pos[1])
@@ -256,72 +232,65 @@ class DualCameraDetectionNode(Node):
         self.publish_fused_poses()
 
     def publish_fused_poses(self):
-        """Compute and publish fused poses for each agent."""
+        """Compute and publish fused poses for each agent using all valid cameras."""
         current_time = time.time()
 
         for agent_id in self.agent_ids:
-            cam0_data = self.camera_poses[0][agent_id]
-            cam1_data = self.camera_poses[1][agent_id]
+            valid_data = []
+            for cam_id in range(self.num_cameras):
+                data = self.camera_poses[cam_id][agent_id]
+                if (data['pose'] is not None and
+                        (current_time - data['timestamp']) < self.pose_timeout):
+                    valid_data.append((cam_id, data))
 
-            # Check if data from each camera is still valid
-            cam0_valid = (cam0_data['pose'] is not None and 
-                          (current_time - cam0_data['timestamp']) < self.pose_timeout)
-            cam1_valid = (cam1_data['pose'] is not None and 
-                          (current_time - cam1_data['timestamp']) < self.pose_timeout)
+            if not valid_data:
+                continue
 
-            fused_pose = None
-            fusion_source = ""
-
-            if cam0_valid and cam1_valid:
-                p0 = cam0_data['pose']
-                p1 = cam1_data['pose']
-                d0 = cam0_data.get('distance', 1.0)
-                d1 = cam1_data.get('distance', 1.0)
-
+            if len(valid_data) == 1:
+                fused_pose = valid_data[0][1]['pose']
+            else:
                 # Inverse-distance weights: closer camera gets more influence
-                w0 = 1.0 / max(d0, 1e-6)
-                w1 = 1.0 / max(d1, 1e-6)
-                total = w0 + w1
-                w0 /= total
-                w1 /= total
+                weights = []
+                for _, data in valid_data:
+                    d = data.get('distance', 1.0)
+                    weights.append(1.0 / max(d, 1e-6))
+                total_w = sum(weights)
+                weights = [w / total_w for w in weights]
 
                 fused_pose = Pose()
-                fused_pose.position.x = w0 * p0.position.x + w1 * p1.position.x
-                fused_pose.position.y = w0 * p0.position.y + w1 * p1.position.y
-                fused_pose.position.z = w0 * p0.position.z + w1 * p1.position.z
+                fused_pose.position.x = sum(w * d['pose'].position.x for w, (_, d) in zip(weights, valid_data))
+                fused_pose.position.y = sum(w * d['pose'].position.y for w, (_, d) in zip(weights, valid_data))
+                fused_pose.position.z = sum(w * d['pose'].position.z for w, (_, d) in zip(weights, valid_data))
 
-                q0 = [p0.orientation.x, p0.orientation.y, p0.orientation.z, p0.orientation.w]
-                q1 = [p1.orientation.x, p1.orientation.y, p1.orientation.z, p1.orientation.w]
-                q_fused = slerp_quaternion(q0, q1, w1)
+                # Iterative pairwise slerp for quaternion fusion
+                q_fused = [
+                    valid_data[0][1]['pose'].orientation.x,
+                    valid_data[0][1]['pose'].orientation.y,
+                    valid_data[0][1]['pose'].orientation.z,
+                    valid_data[0][1]['pose'].orientation.w,
+                ]
+                cumulative_w = weights[0]
+                for k in range(1, len(valid_data)):
+                    q_next = [
+                        valid_data[k][1]['pose'].orientation.x,
+                        valid_data[k][1]['pose'].orientation.y,
+                        valid_data[k][1]['pose'].orientation.z,
+                        valid_data[k][1]['pose'].orientation.w,
+                    ]
+                    cumulative_w += weights[k]
+                    t = weights[k] / cumulative_w
+                    q_fused = slerp_quaternion(q_fused, q_next, t)
 
                 fused_pose.orientation.x = float(q_fused[0])
                 fused_pose.orientation.y = float(q_fused[1])
                 fused_pose.orientation.z = float(q_fused[2])
                 fused_pose.orientation.w = float(q_fused[3])
 
-                fusion_source = f"both (w0={w0:.2f}, w1={w1:.2f})"
-
-            elif cam0_valid:
-                # Only camera0 sees the marker - use its data
-                fused_pose = cam0_data['pose']
-                fusion_source = "camera0 only"
-
-            elif cam1_valid:
-                # Only camera1 sees the marker - use its data
-                fused_pose = cam1_data['pose']
-                fusion_source = "camera1 only"
-
-            # Publish fused pose if available
-            if fused_pose is not None:
-                stamped = PoseStamped()
-                stamped.header.stamp = self.get_clock().now().to_msg()
-                stamped.header.frame_id = 'world'
-                stamped.pose = fused_pose
-                self.fused_pose_pubs[agent_id].publish(stamped)
-                # self.get_logger().info(
-                #     f"🎯 Agent {agent_id} fused pose ({fusion_source}): "
-                #     f"x={fused_pose.position.x:.3f}, y={fused_pose.position.y:.3f}, z={fused_pose.position.z:.3f}"
-                # )
+            stamped = PoseStamped()
+            stamped.header.stamp = self.get_clock().now().to_msg()
+            stamped.header.frame_id = 'world'
+            stamped.pose = fused_pose
+            self.fused_pose_pubs[agent_id].publish(stamped)
 
     def destroy_node(self):
         cv2.destroyAllWindows()
@@ -330,7 +299,7 @@ class DualCameraDetectionNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = DualCameraDetectionNode()
+    node = MultiCameraDetectionNode()
 
     try:
         rclpy.spin(node)
@@ -338,7 +307,10 @@ def main(args=None):
         pass
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        try:
+            rclpy.shutdown()
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

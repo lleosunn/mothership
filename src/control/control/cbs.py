@@ -3,7 +3,7 @@ from itertools import combinations
 import math
 import time as _time
 
-grid_scale_factor = 5  # world boundary in grid cells
+grid_scale_factor = 15  # world boundary in grid cells
 
 # DJI RoboMaster EP Core: 320 × 240 mm
 ROBOT_LENGTH_M = 0.320

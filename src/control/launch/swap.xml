@@ -3,6 +3,7 @@
   <!-- Localization must publish /fused_pose_1, /fused_pose_2, /fused_pose_4, /fused_pose_7. -->
   <!-- swap_planner reads fused poses, plans CBS swap, publishes /goal_pose_*. -->
   <!-- move_to_goal handles the actual motion control. -->
+  <node pkg="localization" exec="pose_logger" name="pose_logger" output="screen"/>
   <node pkg="control" exec="move_to_goal" name="move_to_goal" output="screen"/>
   <node pkg="control" exec="swap_planner" name="swap_planner" output="screen">
     <param name="cell_size_m" value="0.48"/>

@@ -37,10 +37,11 @@ You need **three terminal windows**:
 #### Terminal 1 — Localization pipeline
 
 ```bash
-ros2 launch localization launch.xml
+ros2 launch localization launch.py
+# With custom cameras: ros2 launch localization launch.py device_indices:="0,2,4"
 ```
 
-This starts both camera publishers and the `dual_camera_detection` node. Once running, you should see `/pose_N` topics being published for every detected robot marker. The cameras should be able to see the origin marker0, they will print out in the terminal once that happens.
+This starts camera publishers for each device index and the `multi_camera_detection` node. Once running, you should see `/fused_pose_N` topics being published for every detected robot marker. The cameras should be able to see the origin marker 0, they will print out in the terminal once that happens.
 
 #### Terminal 2 — rviz2 (visualization)
 
@@ -130,6 +131,7 @@ CBS may fail to find a solution if:
 - Robots are too close together (mapping to the same grid cell)
 - The grid is too small for the number of agents to navigate without conflict
 - The problem is too constrained (many agents in a tight space)
+I've seen cbs failing if they are all aligned in a straight line (for example after running formation_horizontal.xml and then swap.xml hard to find the optimal paths with those initial positions         )
 
 When this happens you'll see:
 ```
@@ -163,17 +165,16 @@ Handles the full perception pipeline — from raw camera frames to fused robot p
 
 **Nodes:**
 
-| Node                    | Description                                                                                                                                                                                             |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `camera0_publisher`     | Captures frames from webcam 0 and publishes to `/camera0/image_raw`                                                                                                                                     |
-| `camera1_publisher`     | Captures frames from webcam 1 and publishes to `/camera1/image_raw`                                                                                                                                     |
-| `dual_camera_detection` | Detects ArUco markers in both camera feeds, establishes a world frame from marker 0, computes world-frame poses for robot markers (1–N), and fuses detections from both cameras. Publishes to `/pose_N` |
+| Node                      | Description                                                                                                                                                                                                                   |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `camera_publisher`        | Parameterized node — takes `camera_id` and `device_index` ROS parameters. Captures frames from the given OpenCV device and publishes to `/camera{id}/image_raw`. One instance is launched per camera.                         |
+| `multi_camera_detection`  | Detects ArUco markers in all camera feeds, establishes a world frame from marker 0, computes world-frame poses for robot markers (1–N), and fuses detections from all cameras. Takes `num_cameras` param. Publishes to `/fused_pose_N` |
 | `velocity_fusion`       | Subscribes to robot linear velocity and IMU attitude, computes angular velocity, and publishes fused body-frame twist to `/twist_N`                                                                     |
 | `ekf`                   | Extended Kalman Filter fusing global pose observations (`/pose_N`) with body-frame velocities (`/twist_N`). Publishes smoothed pose to `/fused_pose_N`                                                  |
 | `pose_visualizer`       | Real-time matplotlib 2D visualization of raw and fused poses for all agents                                                                                                                             |
 
-**Launch file — `src/localization/launch/launch.xml`:**
-Launches both cameras and the dual camera detection node.
+**Launch file — `src/localization/launch/launch.py`:**
+Launches N cameras and the multi-camera detection node. Pass the `device_indices` argument to specify which OpenCV device indices to use (e.g. `device_indices:="0,2,4"` for three cameras; defaults to `"0,2"`).
 
 ### `control`
 
@@ -230,13 +231,14 @@ Only needed if you change cameras or mounting. Use the scripts in `aruco_marker_
 ## Topic Flow
 
 ```
-Physical Cameras
-    ├─ camera0_publisher ──→ /camera0/image_raw ──┐
-    └─ camera1_publisher ──→ /camera1/image_raw ──┤
-                                                   ↓
-                                    dual_camera_detection
+Physical Cameras (N cameras)
+    ├─ camera_publisher(0) ──→ /camera0/image_raw ──┐
+    ├─ camera_publisher(1) ──→ /camera1/image_raw ──┤
+    └─ camera_publisher(…) ──→ /cameraN/image_raw ──┤
+                                                     ↓
+                                    multi_camera_detection
                                            │
-                                           └──→ /pose_N
+                                           └──→ /fused_pose_N
                                                    │
     RoboMaster Robots                              │
     ├─ /robomaster_N/vel ──────┐                   │

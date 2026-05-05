@@ -77,7 +77,7 @@ class MultiRobotGoalController(Node):
             cmd_vel_topic = {
                 1: '/robomaster_1/cmd_vel',
                 2: '/robomaster_2/cmd_vel',
-                3: '/robomaster3_desktop/cmd_vel',
+                3: '/robomaster5/cmd_vel',
                 4: '/robomaster4/cmd_vel',
                 7: '/robomaster7/cmd_vel',
             }.get(robot_id, f'/robomaster_{robot_id}/cmd_vel')

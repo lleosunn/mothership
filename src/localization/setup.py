@@ -12,7 +12,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'launch'), glob('launch/*.xml')),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.py') + glob('launch/*.xml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -27,9 +27,9 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'camera0_publisher = localization.camera0_publisher:main',
-            'camera1_publisher = localization.camera1_publisher:main',
-            'dual_camera_detection = localization.dual_camera_detection:main',
+            'camera_publisher = localization.camera_publisher:main',
+            'multi_camera_detection = localization.dual_camera_detection:main',
+            'pose_logger = localization.pose_logger:main',
             'pose_visualizer = localization.pose_visualizer:main',
             'velocity_fusion = localization.velocity_fusion:main',
             'ekf = localization.ekf:main',
